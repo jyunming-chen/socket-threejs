@@ -1,12 +1,18 @@
 var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var port = process.env.PORT || 3000;
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
+// note: app.listen(3000) will NOT work here...
+server.listen (3000, function() {
+   console.log ('listening on port ' + 3000);
+});
+
+// express ...
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+// socket.io ...
 io.on('connection', function(socket){
   console.log ('a user connected with socket ');
   
@@ -15,13 +21,9 @@ io.on('connection', function(socket){
     io.emit('chat', msg);
   });
   
-  socket.on('toggle message', function(msg) {
-  	console.log ('move ' + msg);
-  	io.emit ('toggle message', msg);
+  socket.on('toggle', function(msg) {
+  	console.log ('toggle ' + msg);
+  	io.emit ('toggle', msg);
   });
-});
-
-http.listen(port, function(){
-  console.log('listening on *:' + port);
 });
 

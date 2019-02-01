@@ -4,19 +4,16 @@ var io = require('socket.io')(server);
 
 var port = 3000;
 server.listen (port, function() {
-  console.log ('listening on port ' + port)
+	console.log ('listening on port ' + port)
 });
 
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index2.html');
+  res.sendFile(__dirname + '/index3.html');
 });
 
-///////////////////////////////////////
-// global variables
-// nID: for ID of connecting client
-// status: array of status objects {id, turning}
-//
 var nID = 0;
+
+// two-client turning status 
 var status = [];
 
 io.on('connect', function(socket){
@@ -25,12 +22,13 @@ io.on('connect', function(socket){
   // things to do when a client connects
   console.log ('a user connected with socket ');
   
-  // assign and return the ID to the new client
+  // assign and return the ID of the new client
   console.log ('client ' + nID + ' login ...')
   socket.emit ('id_set', nID);
   
-  // broadcast to all OTHERS of new client 
-  // socket.broadcast.emit ('new_id', nID)  
+  // broadcast to all others of new client 
+  socket.broadcast.emit ('new_id', nID)
+  
   // inform the status of all other clients ...
   // new kid needs to learn about old fellows
   
@@ -47,11 +45,11 @@ io.on('connect', function(socket){
   	// find myID in status
   	let i;
   	for (i = 0; i < status.length; i++) {
-  	  if (status[i].id === myID) break;
+  		if (status[i].id === myID) break;
   	}
  	status[i].turn = !status[i].turn;
  	 	
- 	console.log (status);
+ 	console.log (status)
   	io.emit ('update_status', status);
   });
 
