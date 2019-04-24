@@ -41,7 +41,7 @@ init();
 animate();
 
 $('#toggle').click ( function() {
-	socket.emit ('toggle', 33);  // 33: no meaning (testing) 
+	socket.emit ('toggle');  // no args 
 	return false;
 });
     
@@ -61,8 +61,7 @@ $(function () {
   	//window.scrollTo(0, document.body.scrollHeight);
   });
 
-  socket.on('toggle', function(msg) {
-	console.log ('receive toggle ' + msg);
+  socket.on('toggle', function() {
 	doToggle();
   });
 });

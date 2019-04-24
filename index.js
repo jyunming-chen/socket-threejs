@@ -21,9 +21,8 @@ io.on('connection', function(socket){
     io.emit('chat', msg);
   });
   
-  socket.on('toggle', function(msg) {
-  	console.log ('toggle ' + msg);
-  	io.emit ('toggle', msg);
+  socket.on('toggle', function() {
+  	io.emit ('toggle');
   });
 });
 
